@@ -1,11 +1,8 @@
 function [] = affiche_iteration(k, nfonc, xk, fxk, cxk, lambdak, gradL_k)
 
+fprintf('iter: %-4d nfonc: %-6d f(x): %-12.4f ||c(x)||: %-12.4f ||gradL||: %-12.4f\n', ...
+    k, nfonc, fxk, norm(cxk), norm(gradL_k));
+fprintf('    xk:     %s\n', sprintf('%12.4f', xk));
+fprintf('    lambdak: %s\n\n', sprintf('%12.4f', lambdak));
 
-    xk_str = sprintf('%.4f, ', xk);
-    xk_str = ['(' xk_str(1:end-2) ')'];
-
-    lam_str = sprintf('%.4f, ', lambdak);
-    lam_str = ['(' lam_str(1:end-2) ')'];
-
-    fprintf('iter: %d\t nfonc: %d\t xk: %s\t f(x): %.4f\t c(x): %.4f\t lambda: %s\t ||gradL||: %.4f\n', k, nfonc, xk_str, fxk, norm(cxk), lam_str, norm(gradL_k));
 end
