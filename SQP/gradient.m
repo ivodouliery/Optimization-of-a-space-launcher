@@ -1,4 +1,6 @@
 function [gf, gc, n_fonc] = gradient(fc, x, h, nfonc, fx, cx)
+% Calcul gradient par differences finies
+
 fk = fx;
 ck = cx;
 n_fonc = nfonc;
@@ -9,12 +11,13 @@ gc = zeros(m,n);
 
 for i=1:n
     xk = x;
-    xk(i) = x(i)+h;
+    if isscalar(h), hi = h; else, hi = h(i); end
+    xk(i) = x(i) + hi;
 
     [f_xk, c_xk] = fc(xk);
     n_fonc = n_fonc+1;
 
-    gf(i) = (f_xk-fk)/h;
-    gc(:,i) = (c_xk-ck)/h;
+    gf(i) = (f_xk-fk)/hi;
+    gc(:,i) = (c_xk-ck)/hi;
 end
 end
