@@ -1,8 +1,9 @@
 function [Q_prime] = modif_hessien(Q)
-% Regularisation Hessien (si valeurs propres negatives)
+% Régularisation du Hessien (si non défini positif)
 
 lambda_min = min(eig(Q));
 if lambda_min <= 0
+    % Ajout d'un terme diagonal pour rendre Q défini positif
     tho = -lambda_min + 1e-6;
 else
     tho = 0;

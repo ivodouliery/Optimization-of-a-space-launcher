@@ -1,4 +1,5 @@
 function [] = affiche_iteration(k, nfonc, xk, fxk, cxk, lambdak, gradL_k)
+% Affichage des informations de l'itération courante
 
 fprintf('iter: %-4d nfonc: %-6d f(x): %-12.4f ||c(x)||: %-12.4f ||gradL||: %-12.4f\n', ...
     k, nfonc, fxk, norm(cxk), norm(gradL_k));
