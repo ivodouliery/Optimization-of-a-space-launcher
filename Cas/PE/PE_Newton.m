@@ -15,7 +15,7 @@ function [Me, x, lambda, f_opt] = PE_Newton(Vp, Ve, k, Mu)
 %   f_opt  : Valeur de la fonction objectif (opposé du ratio de charge utile)
 
 % --- 1. Paramètres par défaut ---
-if nargin < 1, Vp = 9500; end
+if nargin < 1, Vp = 10000; end
 if nargin < 2, Ve = [2600, 3000, 4400]; end
 if nargin < 3, k  = [0.10, 0.15, 0.20]; end
 if nargin < 4, Mu = 1000; end
@@ -84,5 +84,12 @@ for j = 3:-1:1
     Ms_j = k(j) * Me(j);
     M_above = M_above + Ms_j + Me(j);
 end
+
+M_total = sum(Me) + sum(k'.*Me) + Mu;
+J = Mu / M_total;
+fprintf('\n--- Résultats PE_Newton ---\n');
+fprintf('Masses d''ergols (kg) :\n');
+fprintf('Masse totale M0 = %.4f kg\n', M_total);
+fprintf('Ratio de Charge Utile calculé : J = %.6f\n', J);
 
 end

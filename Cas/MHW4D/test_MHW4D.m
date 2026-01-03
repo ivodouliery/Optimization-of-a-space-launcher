@@ -1,6 +1,8 @@
 clear;
 close all;
 
+% Ajout du chemin vers les fonctions SQP relative à ce dossier
+addpath(genpath('../../SQP'));
 
 x0 = [-1;2;1;-2;-2];
 lambda0 = zeros(3,1);
@@ -10,7 +12,7 @@ lb = [-2; 1; 0; -3; -3];
 
 options.step_size = 1e-10;
 options.hessian_mod = 1;
-options.max_iter = 50;
+options.max_iter = 100;
 options.max_eval = 1000;
 options.tol_x = 1e-4;
 options.tol_f = 1e-4;
