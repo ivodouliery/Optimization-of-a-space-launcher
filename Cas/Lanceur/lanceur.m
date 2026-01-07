@@ -1,5 +1,3 @@
-clear;
-close all;
 
 % === CONSTANTES PHYSIQUES ===
 mu_terre = 3.986e14;  % [m^3/s^2] Constante gravitationnelle

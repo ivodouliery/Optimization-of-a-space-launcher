@@ -1,32 +1,30 @@
 function [xk_p1, nb_f, merite_kp1, n_fonc, fx_p1, cx_p1] = Globalisation(fc, xk, d_QP, rho, nb_fail, nfonc, cx, fx, gf, c1, lb, ub)
-% Globalisation par recherche linéaire (Armijo) avec bornes
+% Globalisation Recherche lineaire (Armijo)
 
-% Dérivée directionnelle et fonction de mérite
 d_merite = gf'*d_QP - rho * norm(cx, 1);
 merite_k = fx + rho*norm(cx, 1);
 
 if d_merite < 1e-10
-    s=1; % Pas initial
+    s=1;
     xk_p1 = xk+s*d_QP;
 
-    % Projection sur les bornes (Clamping)
+    % Clamping (Bornes)
     xk_p1 = max(lb, min(ub, xk_p1));
 
-    % Évaluation initiale
+    % Init
     [fx_p1, cx_p1] = fc(xk_p1);
     n_fonc = nfonc+1;
     merite_kp1 = fx_p1 + rho*norm(cx_p1, 1);
 
     cpt = 0;
-    % Boucle de réduction du pas (Armijo)
     while merite_kp1 >= merite_k + c1 * s * d_merite
         s = s/2;
         xk_p1 = xk+s*d_QP;
 
-        % Re-projection
-        xk_p1 = max(lb, min(ub, xk_p1));
+        % Clamping updates
+        %xk_p1 = max(lb, min(ub, xk_p1));
 
-        % Re-évaluation
+        % Eval
         [fx_p1, cx_p1] = fc(xk_p1);
         n_fonc = nfonc+1;
         merite_kp1 = fx_p1 + rho*norm(cx_p1, 1);
@@ -38,7 +36,6 @@ if d_merite < 1e-10
     end
     nb_f = 0;
 else
-    % Direction non descendante : échec
     xk_p1 = xk;
     fx_p1 = fx;
     cx_p1 = cx;
@@ -48,6 +45,6 @@ else
 end
 
 if nb_f > 20
-    error('Echec Globalisation : Pas de direction de descente trouvée.');
+    error('Echec Globalisation');
 end
 end

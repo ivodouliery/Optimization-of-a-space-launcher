@@ -73,22 +73,32 @@ C1 = Ve(1) * (1 - Omega(1) * x1);
 lambda = f_opt / C1;
 
 % --- 4. Calcul des Masses d'Ergols ---
+% --- 4. Calcul des Masses d'Ergols ---
 Me = zeros(3,1);
 M_above = Mu;
 
 for j = 3:-1:1
     % Formule dérivée de x_j = (M_above + (1+k)*Me) / (M_above + k*Me)
-    Me(j) = M_above * (x(j) - 1) / (1 + k(j) - x(j) * k(j));
+    denom = (1 + k(j) - x(j) * k(j));
+    if denom <= 0
+        warning('PE_Newton:NegativeMass', 'Dénominateur négatif ou nul pour l''étage %d (x=%.2f, limit=%.2f). Me sera négatif/infini.', j, x(j), (1+k(j))/k(j));
+    end
+    Me(j) = M_above * (x(j) - 1) / denom;
 
     % Mise à jour masse 'au-dessus' pour l'étage suivant (en descendant)
     Ms_j = k(j) * Me(j);
     M_above = M_above + Ms_j + Me(j);
 end
 
-M_total = sum(Me) + sum(k'.*Me) + Mu;
+if any(Me < 0)
+    warning('PE_Newton:NegativeMassResult', 'Masses d''ergols négatives détectées !');
+end
+
+M_total = sum(Me) + sum(k(:).*Me) + Mu;
 J = Mu / M_total;
 fprintf('\n--- Résultats PE_Newton ---\n');
 fprintf('Masses d''ergols (kg) :\n');
+disp(Me);
 fprintf('Masse totale M0 = %.4f kg\n', M_total);
 fprintf('Ratio de Charge Utile calculé : J = %.6f\n', J);
 
